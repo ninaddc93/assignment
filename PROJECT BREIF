@@ -1,0 +1,151 @@
+
+
+
+
+
+
+
+
+
+
+###jenkins installation######
+on server1
+sudo apt-get update
+sudo apt-get install openjdk-8-jdk
+wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key |sudo apt-key add -
+sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+sudo apt-get update
+sudo apt-get install jenkins
+sudo systemctl status jenkins
+goto browser> server1IP:8080 it will give you landing page of jenkins.
+###initial password###
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+click on install suggested plugins.
+give credentials,click on continue as admin and then clic on save and it will give you a message statrt using jenkins click on it.
+on server2 only install java.
+before running command for making the slave active create a directory jenkins.
+and create a test-job with hello and restrict to slave.
+then build another job called build website.
+use a docker file and deploy the website and prior to that install docker on your system.
+once the website is deployed then go and create a pipe line for that goto manage jenkins>>manage plugins >> search the build pipeline >>click on install without restart.
+then go to view and build pipeline>> select initial job as trigger.
+click on add existing jobs then add initial job as test.
+then pipeline is build.
+
+
+
+
+
+
+
+package selenium;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.TestListenerAdapter;
+import org.testng.TestNG;
+import org.testng.annotations.Test;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+@Test
+public class test {
+
+	WebDriver driver;
+	public void hello() {
+	System.setProperty("webdriver.chrome.driver", "C:\\\\\\\\Users\\\\\\\\intellipaat-sals\\\\\\\\Desktop\\\\\\\\chromedriver_win32\\\\\\\\chromedriver.exe");
+	ChromeOptions options =new ChromeOptions();
+	options.addArguments("--headless");
+
+	driver = new ChromeDriver(options);  
+	driver.get("https://www.google.co.in/");	
+	
+
+	driver.findElement(By.xpath("/html/body")).isDisplayed();
+
+	
+	
+}
+public static void main(String[] args) {
+TestListenerAdapter adap = new TestListenerAdapter();
+TestNG testng = new TestNG();
+testng.setTestClasses(new Class[] {test.class});
+testng.addListener(adap);
+testng.run();
+
+}
+}
+
+
+
+sudo apt-get install chromium-browser
+sudo apt-get install unzip
+wget https://chromedriver.storage.googleapis.com/78.0.3904.105/chromedriver_linux64.zip
+unzip chromedriver_linux64.zip
+
+on jenkins
+sudo cp ./test.jar /home/ubuntu/
+sudo su -c "java -jar /home/ubuntu/test.jar" -s /bin/sh ubuntu
+
+Hands-on Puppet part1
+
+
+
+  Puppet- master
+  1  sudo apt-get update
+    2  sudo apt-get install wget
+    3  
+    4  apt policy puppet-master
+    5  sudo nano /etc/default/puppet-master
+    6  JAVA_ARGS="-Xms512m Xmx512m" //Add this Line 
+    sudo systemctl restart puppet-master
+    7  sudo ufw allow 8140/tcp
+    8  sudo puppet cert list
+    9  sudo puppet cert sign --all
+   10  cd /etc/puppet/code
+   35  sudo mkdir -p environments/production/manifests
+   36  ls
+   37  cd environments/
+   38  cd production/
+   39  cd manifests/
+   40  ls
+   41  sudo nano site.pp
+   
+node default{
+       package{'nginx':
+                    ensure => installed,
+                          }
+       file {'/var/www/html/index.html':
+                      ensure => present,
+                      content => '<body bgcolor="red"><h1>helloworld</h1></body>',
+                      mode => '0644',
+                      }
+            }
+
+########################
+#####On slave###########
+########################
+  1  sudo apt-get update
+    2  wget wget https://apt.puppetlabs.com/puppet-release-bionic.deb
+    3  sudo dpkg -i puppet-release-bionic.deb
+    4  sudo apt-get update
+    5  apt policy puppet
+    6  sudo apt-get install puppet
+    7  sudo apt-get update
+    8  apt policy puppet
+    9  sudo nano /etc/hosts
+    <Master public ip> puppet
+
+
+   10  sudo systemctl start puppet
+   11  sudo systemctl enable puppet
+   12  sudo puppet agent --test
+   15  sudo systemctl status nginx
+   16  cd /var/www/html
+   17  ls
+   18  sudo nano index.html
+   Browse on ip address of slave  you will get the basic web page. 
+
+
+
+   
